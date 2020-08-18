@@ -3,7 +3,6 @@ package me.pljr.economy.commands;
 import me.pljr.economy.config.CfgLang;
 import me.pljr.economy.enums.Lang;
 import me.pljr.pljrapi.utils.CommandUtil;
-import me.pljr.pljrapi.utils.NumberUtil;
 import me.pljr.pljrapi.utils.PlayerUtil;
 import me.pljr.pljrapi.utils.VaultUtil;
 import org.bukkit.Bukkit;
@@ -56,10 +55,7 @@ public class EconomyCommand extends CommandUtil implements CommandExecutor {
                 }
                 Player player = (Player) sender;
                 if (!checkPerm(player, "economy.send")) return false;
-                if (!NumberUtil.isInt(args[2])){
-                    player.sendMessage(CfgLang.lang.get(Lang.NO_NUMBER).replace("%arg", args[2]));
-                    return false;
-                }
+                if (!checkInt(player, args[2])) return false;
                 double amount = Integer.parseInt(args[2]);
                 double playerBalance = VaultUtil.getBalance(player);
                 if (amount > playerBalance){

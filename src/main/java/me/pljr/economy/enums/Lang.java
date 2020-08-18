@@ -3,7 +3,6 @@ package me.pljr.economy.enums;
 public enum Lang {
     CONSOLE_NAME,
     NO_CONSOLE,
-    NO_NUMBER,
     NO_POSITIVE_NUMBER,
     ECONOMY_SUCCESS,
     ECONOMY_BALANCE_SUCCESS,

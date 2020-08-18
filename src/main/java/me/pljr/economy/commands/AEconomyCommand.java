@@ -3,7 +3,6 @@ package me.pljr.economy.commands;
 import me.pljr.economy.config.CfgLang;
 import me.pljr.economy.enums.Lang;
 import me.pljr.pljrapi.utils.CommandUtil;
-import me.pljr.pljrapi.utils.NumberUtil;
 import me.pljr.pljrapi.utils.PlayerUtil;
 import me.pljr.pljrapi.utils.VaultUtil;
 import org.bukkit.Bukkit;
@@ -31,10 +30,7 @@ public class AEconomyCommand extends CommandUtil implements CommandExecutor {
             // /aeconomy set <player> <amount>
             if (args[0].equalsIgnoreCase("set")){
                 if (!checkPerm(sender, "aeconomy.set")) return false;
-                if (!NumberUtil.isInt(args[2])){
-                    sender.sendMessage(CfgLang.lang.get(Lang.NO_NUMBER).replace("%arg", args[2]));
-                    return false;
-                }
+                if (!checkInt(sender, args[2])) return false;
                 double amount = Integer.parseInt(args[2]);
                 if (!(amount > 0)){
                     sender.sendMessage(CfgLang.lang.get(Lang.NO_POSITIVE_NUMBER));
@@ -54,10 +50,7 @@ public class AEconomyCommand extends CommandUtil implements CommandExecutor {
             // /aeconomy add <player> <amount>
             if (args[0].equalsIgnoreCase("add")){
                 if (!checkPerm(sender, "aeconomy.add")) return false;
-                if (!NumberUtil.isInt(args[2])){
-                    sender.sendMessage(CfgLang.lang.get(Lang.NO_NUMBER).replace("%arg", args[2]));
-                    return false;
-                }
+                if (!checkInt(sender, args[2])) return false;
                 double amount = Integer.parseInt(args[2]);
                 if (!(amount > 0)){
                     sender.sendMessage(CfgLang.lang.get(Lang.NO_POSITIVE_NUMBER));
@@ -75,10 +68,7 @@ public class AEconomyCommand extends CommandUtil implements CommandExecutor {
             // /aconomy remove <player> <amount>
             if (args[0].equalsIgnoreCase("remove")){
                 if (!checkPerm(sender, "aeconomy.remove")) return false;
-                if (!NumberUtil.isInt(args[2])){
-                    sender.sendMessage(CfgLang.lang.get(Lang.NO_NUMBER).replace("%arg", args[2]));
-                    return false;
-                }
+                if (!checkInt(sender, args[2])) return false;
                 double amount = Integer.parseInt(args[2]);
                 if (!(amount > 0)){
                     sender.sendMessage(CfgLang.lang.get(Lang.NO_POSITIVE_NUMBER));

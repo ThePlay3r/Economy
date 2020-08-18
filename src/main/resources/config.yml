@@ -49,7 +49,6 @@ admin-help:
 lang:
   CONSOLE_NAME: "Console"
   NO_CONSOLE: "§cThis command is for in-game use only!"
-  NO_NUMBER: "§aEconomy §8» §b%arg §fis not a number!"
   NO_POSITIVE_NUMBER: "§aEconomy §8» §fThe number must be positive!"
   ECONOMY_SUCCESS: "§aEconomy §8» §fYour balance is: §b$%money§f."
   ECONOMY_BALANCE_SUCCESS: "§aEconomy §8» §fBalance of §b%player §fis: §b$%money§f."
