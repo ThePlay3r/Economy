@@ -38,8 +38,8 @@ public final class Economy extends JavaPlugin implements Listener {
     private void onPLJRAPIStartup(PLJRApiStartupEvent event){
         getServer().getConsoleSender().sendMessage("PLJRApi started.");
         setupConfig();
-        setupDatabase();
         setupManagers();
+        setupDatabase();
         setupListeners();
         setupCommands();
     }
