@@ -9,5 +9,6 @@ description: Plugin for handling in-game economy.
 commands:
   economy:
     description: Main command for handling Economy.
+    aliases: [bal, money]
   aeconomy:
     description: Admin command for handling Economy.
