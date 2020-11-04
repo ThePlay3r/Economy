@@ -57,10 +57,14 @@ public class AEconomyCommand extends CommandUtil implements CommandExecutor {
                     return false;
                 }
                 VaultUtil.deposit(args[1], amount);
-                sendMessage(sender, CfgLang.lang.get(Lang.AECONOMY_ADD_SUCCESS).replace("%player", args[1]).replace("%money", args[2]));
+                sendMessage(sender, CfgLang.lang.get(Lang.AECONOMY_ADD_SUCCESS)
+                        .replace("%player", args[1])
+                        .replace("%money", args[2]));
                 if (PlayerUtil.isPlayer(args[1])){
                     Player player = Bukkit.getPlayer(args[1]);
-                    sendMessage(player, CfgLang.lang.get(Lang.AECONOMY_ADD_SUCCESS_NOTIFY).replace("%player", sender.getName()));
+                    sendMessage(player, CfgLang.lang.get(Lang.AECONOMY_ADD_SUCCESS_NOTIFY)
+                            .replace("%player", args[1])
+                            .replace("%money", args[2]));
                 }
                 return true;
             }
