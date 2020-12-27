@@ -1,109 +1,194 @@
 package me.pljr.economy.commands;
 
-import me.pljr.economy.config.CfgLang;
-import me.pljr.economy.enums.Lang;
-import me.pljr.pljrapi.utils.CommandUtil;
-import me.pljr.pljrapi.utils.PlayerUtil;
-import me.pljr.pljrapi.utils.VaultUtil;
+import me.pljr.economy.config.Lang;
+import me.pljr.pljrapispigot.utils.CommandUtil;
+import me.pljr.pljrapispigot.utils.PlayerUtil;
+import me.pljr.pljrapispigot.utils.VaultUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-public class AEconomyCommand extends CommandUtil implements CommandExecutor {
+public class AEconomyCommand extends CommandUtil {
+
+    public AEconomyCommand(){
+        super("aeconomy", "aeconomy.use");
+    }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!checkPerm(sender, "aeconomy.use")) return false;
-
+    public void onPlayerCommand(Player player, String[] args){
         if (args.length == 1){
             // /aeconomy help
             if (args[0].equalsIgnoreCase("help")){
-                if (checkPerm(sender, "aeconomy.help")) return false;
-                sendHelp(sender, CfgLang.adminHelp);
-                return true;
+                if (checkPerm(player, "aeconomy.help")) return;
+                sendMessage(player, Lang.ADMIN_HELP);
+                return;
             }
         }
 
         else if (args.length == 3){
             // /aeconomy set <player> <amount>
             if (args[0].equalsIgnoreCase("set")){
-                if (!checkPerm(sender, "aeconomy.set")) return false;
-                if (!checkInt(sender, args[2])) return false;
+                if (!checkPerm(player, "aeconomy.set")) return;
+                if (!checkInt(player, args[2])) return;
                 double amount = Integer.parseInt(args[2]);
                 if (!(amount > 0)){
-                    sendMessage(sender, CfgLang.lang.get(Lang.NO_POSITIVE_NUMBER));
-                    return false;
+                    sendMessage(player, Lang.NO_POSITIVE_NUMBER.get());
+                    return;
                 }
                 double playerMoney = VaultUtil.getBalance(args[1]);
                 VaultUtil.withdraw(args[1], playerMoney);
                 VaultUtil.deposit(args[1], amount);
-                sendMessage(sender, CfgLang.lang.get(Lang.AECONOMY_SET_SUCCESS)
-                        .replace("%player", args[1])
-                        .replace("%money", args[2]));
+                sendMessage(player, Lang.AECONOMY_SET_SUCCESS.get()
+                        .replace("{player}", args[1])
+                        .replace("{money}", args[2]));
                 if (PlayerUtil.isPlayer(args[1])){
-                    Player player = Bukkit.getPlayer(args[1]);
-                    sendMessage(player, CfgLang.lang.get(Lang.AECONOMY_SET_SUCCESS_NOTIFY)
-                            .replace("%player", sender.getName())
-                            .replace("%money", args[2]));
+                    Player target = Bukkit.getPlayer(args[1]);
+                    sendMessage(target, Lang.AECONOMY_SET_SUCCESS_NOTIFY.get()
+                            .replace("{player}", player.getName())
+                            .replace("{money}", args[2]));
                 }
-                return true;
+                return;
             }
 
             // /aeconomy add <player> <amount>
             if (args[0].equalsIgnoreCase("add")){
-                if (!checkPerm(sender, "aeconomy.add")) return false;
-                if (!checkInt(sender, args[2])) return false;
+                if (!checkPerm(player, "aeconomy.add")) return;
+                if (!checkInt(player, args[2])) return;
                 double amount = Integer.parseInt(args[2]);
                 if (!(amount > 0)){
-                    sendMessage(sender, CfgLang.lang.get(Lang.NO_POSITIVE_NUMBER));
-                    return false;
+                    sendMessage(player, Lang.NO_POSITIVE_NUMBER.get());
+                    return;
                 }
                 VaultUtil.deposit(args[1], amount);
-                sendMessage(sender, CfgLang.lang.get(Lang.AECONOMY_ADD_SUCCESS)
-                        .replace("%player", args[1])
-                        .replace("%money", args[2]));
+                sendMessage(player, Lang.AECONOMY_ADD_SUCCESS.get()
+                        .replace("{player}", args[1])
+                        .replace("{money}", args[2]));
                 if (PlayerUtil.isPlayer(args[1])){
-                    Player player = Bukkit.getPlayer(args[1]);
-                    sendMessage(player, CfgLang.lang.get(Lang.AECONOMY_ADD_SUCCESS_NOTIFY)
-                            .replace("%player", sender.getName())
-                            .replace("%money", args[2]));
+                    Player target = Bukkit.getPlayer(args[1]);
+                    sendMessage(target, Lang.AECONOMY_ADD_SUCCESS_NOTIFY.get()
+                            .replace("{player}", player.getName())
+                            .replace("{money}", args[2]));
                 }
-                return true;
+                return;
             }
 
             // /aconomy remove <player> <amount>
             if (args[0].equalsIgnoreCase("remove")){
-                if (!checkPerm(sender, "aeconomy.remove")) return false;
-                if (!checkInt(sender, args[2])) return false;
+                if (!checkPerm(player, "aeconomy.remove")) return;
+                if (!checkInt(player, args[2])) return;
                 double amount = Integer.parseInt(args[2]);
                 if (!(amount > 0)){
-                    sendMessage(sender, CfgLang.lang.get(Lang.NO_POSITIVE_NUMBER));
-                    return false;
+                    sendMessage(player, Lang.NO_POSITIVE_NUMBER.get());
+                    return;
                 }
                 double playerMoney = VaultUtil.getBalance(args[1]);
                 if ((playerMoney-amount)<0){
-                    sendMessage(sender, CfgLang.lang.get(Lang.AECONOMY_REMOVE_FAILURE_TOO_MUCH).replace("%player", args[1]));
-                    return false;
+                    sendMessage(player, Lang.AECONOMY_REMOVE_FAILURE_TOO_MUCH.get().replace("{player}", args[1]));
+                    return;
                 }
                 VaultUtil.withdraw(args[1], amount);
-                sendMessage(sender, CfgLang.lang.get(Lang.AECONOMY_REMOVE_SUCCESS)
-                        .replace("%player", args[1])
-                        .replace("%money", args[2]));
+                sendMessage(player, Lang.AECONOMY_REMOVE_SUCCESS.get()
+                        .replace("{player}", args[1])
+                        .replace("{money}", args[2]));
                 if (PlayerUtil.isPlayer(args[1])){
-                    Player player = Bukkit.getPlayer(args[1]);
-                    sendMessage(player, CfgLang.lang.get(Lang.AECONOMY_REMOVE_SUCCESS_NOTIFY)
-                            .replace("%player", sender.getName())
-                            .replace("%money", args[2]));
+                    Player target = Bukkit.getPlayer(args[1]);
+                    sendMessage(target, Lang.AECONOMY_REMOVE_SUCCESS_NOTIFY.get()
+                            .replace("{player}", player.getName())
+                            .replace("{money}", args[2]));
                 }
-                return true;
+                return;
             }
         }
 
-        if (checkPerm(sender, "aeconomy.help")){
-            sendHelp(sender, CfgLang.adminHelp);
+        if (checkPerm(player, "aeconomy.help")){
+            sendMessage(player, Lang.ADMIN_HELP);
         }
-        return false;
+    }
+
+    @Override
+    public void onConsoleCommand(ConsoleCommandSender sender, String[] args){
+        if (args.length == 1){
+            // /aeconomy help
+            if (args[0].equalsIgnoreCase("help")){
+                sendMessage(sender, Lang.ADMIN_HELP);
+                return;
+            }
+        }
+
+        else if (args.length == 3){
+            // /aeconomy set <player> <amount>
+            if (args[0].equalsIgnoreCase("set")){
+                if (!checkInt(sender, args[2])) return;
+                double amount = Integer.parseInt(args[2]);
+                if (!(amount > 0)){
+                    sendMessage(sender, Lang.NO_POSITIVE_NUMBER.get());
+                    return;
+                }
+                double playerMoney = VaultUtil.getBalance(args[1]);
+                VaultUtil.withdraw(args[1], playerMoney);
+                VaultUtil.deposit(args[1], amount);
+                sendMessage(sender, Lang.AECONOMY_SET_SUCCESS.get()
+                        .replace("{player}", args[1])
+                        .replace("{money}", args[2]));
+                if (PlayerUtil.isPlayer(args[1])){
+                    Player target = Bukkit.getPlayer(args[1]);
+                    sendMessage(target, Lang.AECONOMY_SET_SUCCESS_NOTIFY.get()
+                            .replace("{player}", sender.getName())
+                            .replace("{money}", args[2]));
+                }
+                return;
+            }
+
+            // /aeconomy add <player> <amount>
+            if (args[0].equalsIgnoreCase("add")){
+                if (!checkInt(sender, args[2])) return;
+                double amount = Integer.parseInt(args[2]);
+                if (!(amount > 0)){
+                    sendMessage(sender, Lang.NO_POSITIVE_NUMBER.get());
+                    return;
+                }
+                VaultUtil.deposit(args[1], amount);
+                sendMessage(sender, Lang.AECONOMY_ADD_SUCCESS.get()
+                        .replace("{player}", args[1])
+                        .replace("{money}", args[2]));
+                if (PlayerUtil.isPlayer(args[1])){
+                    Player target = Bukkit.getPlayer(args[1]);
+                    sendMessage(target, Lang.AECONOMY_ADD_SUCCESS_NOTIFY.get()
+                            .replace("{player}", sender.getName())
+                            .replace("{money}", args[2]));
+                }
+                return;
+            }
+
+            // /aconomy remove <player> <amount>
+            if (args[0].equalsIgnoreCase("remove")){
+                if (!checkInt(sender, args[2])) return;
+                double amount = Integer.parseInt(args[2]);
+                if (!(amount > 0)){
+                    sendMessage(sender, Lang.NO_POSITIVE_NUMBER.get());
+                    return;
+                }
+                double playerMoney = VaultUtil.getBalance(args[1]);
+                if ((playerMoney-amount)<0){
+                    sendMessage(sender, Lang.AECONOMY_REMOVE_FAILURE_TOO_MUCH.get().replace("{player}", args[1]));
+                    return;
+                }
+                VaultUtil.withdraw(args[1], amount);
+                sendMessage(sender, Lang.AECONOMY_REMOVE_SUCCESS.get()
+                        .replace("{player}", args[1])
+                        .replace("{money}", args[2]));
+                if (PlayerUtil.isPlayer(args[1])){
+                    Player target = Bukkit.getPlayer(args[1]);
+                    sendMessage(target, Lang.AECONOMY_REMOVE_SUCCESS_NOTIFY.get()
+                            .replace("{player}", sender.getName())
+                            .replace("{money}", args[2]));
+                }
+                return;
+            }
+        }
+
+        sendMessage(sender, Lang.ADMIN_HELP);
     }
 }

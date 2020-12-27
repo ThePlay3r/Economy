@@ -1,7 +1,6 @@
 package me.pljr.economy.handlers;
 
-import me.pljr.economy.config.CfgLang;
-import me.pljr.economy.enums.Lang;
+import me.pljr.economy.config.Lang;
 import me.pljr.economy.objects.CorePlayer;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -239,8 +238,8 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        if (!hasAccount(playerName)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, CfgLang.lang.get(Lang.VAULT_WITHDRAW_PLAYER_FAILURE_NO_ACCOUNT).replace("%player", playerName));
-        if (!has(playerName, amount)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, CfgLang.lang.get(Lang.VAULT_WITHDRAW_PLAYER_FAILURE_TOO_MUCH).replace("%player", playerName));
+        if (!hasAccount(playerName)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_WITHDRAW_PLAYER_FAILURE_NO_ACCOUNT.get().replace("{player}", playerName));
+        if (!has(playerName, amount)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_WITHDRAW_PLAYER_FAILURE_TOO_MUCH.get().replace("{player}", playerName));
 
         UUID uuid = Bukkit.getOfflinePlayer(playerName).getUniqueId();
         CorePlayer corePlayer = me.pljr.economy.Economy.getPlayerManager().getCorePlayer(uuid);
@@ -260,8 +259,8 @@ public class VaultHandler implements Economy {
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
         String playerName = player.getName();
-        if (!hasAccount(player)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, CfgLang.lang.get(Lang.VAULT_WITHDRAW_PLAYER_FAILURE_NO_ACCOUNT).replace("%player", playerName));
-        if (!has(player, amount)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, CfgLang.lang.get(Lang.VAULT_WITHDRAW_PLAYER_FAILURE_TOO_MUCH).replace("%player", playerName));
+        if (!hasAccount(player)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_WITHDRAW_PLAYER_FAILURE_NO_ACCOUNT.get().replace("{player}", playerName));
+        if (!has(player, amount)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_WITHDRAW_PLAYER_FAILURE_TOO_MUCH.get().replace("{player}", playerName));
 
         UUID uuid = player.getUniqueId();
         CorePlayer corePlayer = me.pljr.economy.Economy.getPlayerManager().getCorePlayer(uuid);
@@ -303,7 +302,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        if (!hasAccount(playerName)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, CfgLang.lang.get(Lang.VAULT_DEPOSIT_PLAYER_FAILURE_NO_ACCOUNT).replace("%player", playerName));
+        if (!hasAccount(playerName)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_DEPOSIT_PLAYER_FAILURE_NO_ACCOUNT.get().replace("{player}", playerName));
 
         UUID uuid = Bukkit.getOfflinePlayer(playerName).getUniqueId();
         CorePlayer corePlayer = me.pljr.economy.Economy.getPlayerManager().getCorePlayer(uuid);
@@ -323,7 +322,7 @@ public class VaultHandler implements Economy {
     @Override
     public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
         String playerName = player.getName();
-        if (!hasAccount(player)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, CfgLang.lang.get(Lang.VAULT_DEPOSIT_PLAYER_FAILURE_NO_ACCOUNT).replace("%player", playerName));
+        if (!hasAccount(player)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_DEPOSIT_PLAYER_FAILURE_NO_ACCOUNT.get().replace("{player}", playerName));
 
         UUID uuid = player.getUniqueId();
         CorePlayer corePlayer = me.pljr.economy.Economy.getPlayerManager().getCorePlayer(uuid);
@@ -365,7 +364,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse createBank(String name, String player) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -377,7 +376,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse createBank(String name, OfflinePlayer player) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -388,7 +387,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse deleteBank(String name) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -399,7 +398,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse bankBalance(String name) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -411,7 +410,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse bankHas(String name, double amount) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -423,7 +422,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse bankWithdraw(String name, double amount) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -435,7 +434,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse bankDeposit(String name, double amount) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -445,7 +444,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse isBankOwner(String name, String playerName) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -457,7 +456,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse isBankOwner(String name, OfflinePlayer player) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -467,7 +466,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse isBankMember(String name, String playerName) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**
@@ -479,7 +478,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public EconomyResponse isBankMember(String name, OfflinePlayer player) {
-        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, CfgLang.lang.get(Lang.VAULT_NOT_IMPLEMENTED));
+        return new EconomyResponse(0, 0, EconomyResponse.ResponseType.NOT_IMPLEMENTED, Lang.VAULT_NOT_IMPLEMENTED.get());
     }
 
     /**

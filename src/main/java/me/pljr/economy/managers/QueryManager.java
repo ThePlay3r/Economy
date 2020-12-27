@@ -2,7 +2,7 @@ package me.pljr.economy.managers;
 
 import me.pljr.economy.Economy;
 import me.pljr.economy.objects.CorePlayer;
-import me.pljr.pljrapi.database.DataSource;
+import me.pljr.pljrapispigot.database.DataSource;
 import org.bukkit.Bukkit;
 
 import java.sql.Connection;

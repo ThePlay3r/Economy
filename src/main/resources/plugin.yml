@@ -2,8 +2,7 @@ name: Economy
 version: ${project.version}
 main: me.pljr.economy.Economy
 api-version: 1.13
-depend: [Vault]
-loadbefore: [PLJRApi]
+load: STARTUP
 authors: [9hx]
 description: Plugin for handling in-game economy.
 commands:

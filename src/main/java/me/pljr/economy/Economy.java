@@ -2,16 +2,15 @@ package me.pljr.economy;
 
 import me.pljr.economy.commands.AEconomyCommand;
 import me.pljr.economy.commands.EconomyCommand;
-import me.pljr.economy.config.CfgLang;
+import me.pljr.economy.config.Lang;
 import me.pljr.economy.handlers.VaultHandler;
 import me.pljr.economy.listeners.AsyncPlayerPreLoginListener;
 import me.pljr.economy.listeners.PlayerQuitListener;
 import me.pljr.economy.managers.PlayerManager;
 import me.pljr.economy.managers.QueryManager;
-import me.pljr.pljrapi.PLJRApi;
-import me.pljr.pljrapi.database.DataSource;
-import me.pljr.pljrapi.events.PLJRApiStartupEvent;
-import me.pljr.pljrapi.managers.ConfigManager;
+import me.pljr.pljrapispigot.database.DataSource;
+import me.pljr.pljrapispigot.events.PLJRApiStartupEvent;
+import me.pljr.pljrapispigot.managers.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +27,6 @@ public final class Economy extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        if (!setupPLJRApi()) return;
         instance = this;
         getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, new VaultHandler(), this, ServicePriority.Highest);
         getServer().getPluginManager().registerEvents(this, this);
@@ -43,22 +41,10 @@ public final class Economy extends JavaPlugin implements Listener {
         setupCommands();
     }
 
-    private boolean setupPLJRApi(){
-        PLJRApi api = (PLJRApi) Bukkit.getServer().getPluginManager().getPlugin("PLJRApi");
-        if (api == null){
-            Bukkit.getConsoleSender().sendMessage("§cEconomy: PLJRApi not found, disabling plugin!");
-            getServer().getPluginManager().disablePlugin(this);
-            return false;
-        }else{
-            Bukkit.getConsoleSender().sendMessage("§aEconomy: Hooked into PLJRApi!");
-            return true;
-        }
-    }
-
     private void setupConfig(){
         saveDefaultConfig();
-        configManager = new ConfigManager(getConfig(), "§cEconomy:", "config.yml");
-        CfgLang.load(configManager);
+        configManager = new ConfigManager(this, "config.yml");
+        Lang.load(configManager);
     }
 
     private void setupDatabase(){
