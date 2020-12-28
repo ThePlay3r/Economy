@@ -5,8 +5,6 @@ import me.pljr.pljrapispigot.utils.CommandUtil;
 import me.pljr.pljrapispigot.utils.PlayerUtil;
 import me.pljr.pljrapispigot.utils.VaultUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
