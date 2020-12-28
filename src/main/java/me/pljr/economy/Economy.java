@@ -61,8 +61,8 @@ public final class Economy extends JavaPlugin implements Listener {
     }
 
     private void setupCommands(){
-        getCommand("economy").setExecutor(new EconomyCommand());
-        getCommand("aeconomy").setExecutor(new AEconomyCommand());
+        new EconomyCommand().registerCommand(this);
+        new AEconomyCommand().registerCommand(this);
     }
 
     private void setupListeners(){
