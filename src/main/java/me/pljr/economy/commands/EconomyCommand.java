@@ -26,7 +26,7 @@ public class EconomyCommand extends CommandUtil {
             // /economy help
             if (args[0].equalsIgnoreCase("help")){
                 if (!checkPerm(player, "economy.help")) return;
-                sendMessage(player, Lang.HELP);
+                sendMessage(player, Lang.HELP.get());
                 return;
             }
         }
@@ -63,7 +63,7 @@ public class EconomyCommand extends CommandUtil {
         }
 
         if (checkPerm(player, "economy.help")){
-            sendMessage(player, Lang.HELP);
+            sendMessage(player, Lang.HELP.get());
         }
     }
 
@@ -72,7 +72,7 @@ public class EconomyCommand extends CommandUtil {
         if (args.length == 1){
             // /economy help
             if (args[0].equalsIgnoreCase("help")){
-                sendMessage(sender, Lang.HELP);
+                sendMessage(sender, Lang.HELP.get());
                 return;
             }
         }
@@ -85,6 +85,6 @@ public class EconomyCommand extends CommandUtil {
             }
         }
 
-        sendMessage(sender, Lang.HELP);
+        sendMessage(sender, Lang.HELP.get());
     }
 }

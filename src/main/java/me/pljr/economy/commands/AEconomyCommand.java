@@ -19,8 +19,8 @@ public class AEconomyCommand extends CommandUtil {
         if (args.length == 1){
             // /aeconomy help
             if (args[0].equalsIgnoreCase("help")){
-                if (checkPerm(player, "aeconomy.help")) return;
-                sendMessage(player, Lang.ADMIN_HELP);
+                if (!checkPerm(player, "aeconomy.help")) return;
+                sendMessage(player, Lang.ADMIN_HELP.get());
                 return;
             }
         }
@@ -101,7 +101,7 @@ public class AEconomyCommand extends CommandUtil {
         }
 
         if (checkPerm(player, "aeconomy.help")){
-            sendMessage(player, Lang.ADMIN_HELP);
+            sendMessage(player, Lang.ADMIN_HELP.get());
         }
     }
 
@@ -110,7 +110,7 @@ public class AEconomyCommand extends CommandUtil {
         if (args.length == 1){
             // /aeconomy help
             if (args[0].equalsIgnoreCase("help")){
-                sendMessage(sender, Lang.ADMIN_HELP);
+                sendMessage(sender, Lang.ADMIN_HELP.get());
                 return;
             }
         }
@@ -187,6 +187,6 @@ public class AEconomyCommand extends CommandUtil {
             }
         }
 
-        sendMessage(sender, Lang.ADMIN_HELP);
+        sendMessage(sender, Lang.ADMIN_HELP.get());
     }
 }

@@ -20,9 +20,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Economy extends JavaPlugin implements Listener {
     private static Economy instance;
-    private static ConfigManager configManager;
     private static QueryManager queryManager;
     private static PlayerManager playerManager;
+
+    // Files
+    private static ConfigManager configManager;
+    private static ConfigManager langManager;
 
     @Override
     public void onEnable() {
@@ -44,7 +47,8 @@ public final class Economy extends JavaPlugin implements Listener {
     private void setupConfig(){
         saveDefaultConfig();
         configManager = new ConfigManager(this, "config.yml");
-        Lang.load(configManager);
+        langManager = new ConfigManager(this, "lang.yml");
+        Lang.load(langManager);
     }
 
     private void setupDatabase(){
