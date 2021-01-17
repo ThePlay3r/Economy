@@ -6,7 +6,7 @@
 # Description: Plugin for handling in-game economy.
 # Dependencies:
 #   -> MySQL Database
-#   -> PLJRApi
+#   -> PLJRApi-Spigot
 #   -> Vault (https://www.spigotmc.org/resources/vault.34315/)
 #|--------------------------------------------------------------------------------------------------------------------|#
 
