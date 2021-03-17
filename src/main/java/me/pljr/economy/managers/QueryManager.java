@@ -1,7 +1,7 @@
 package me.pljr.economy.managers;
 
 import me.pljr.economy.Economy;
-import me.pljr.economy.objects.CorePlayer;
+import me.pljr.economy.objects.EconomyPlayer;
 import me.pljr.pljrapispigot.database.DataSource;
 import org.bukkit.Bukkit;
 
@@ -18,28 +18,8 @@ public class QueryManager {
         this.dataSource = dataSource;
     }
 
-    public void loadPlayer(UUID uuid){
-        Bukkit.getScheduler().runTaskAsynchronously(Economy.getInstance(), ()->{
-            try {
-                Connection connection = dataSource.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT * FROM economy_players WHERE uuid=?"
-                );
-                preparedStatement.setString(1, uuid.toString());
-                ResultSet results = preparedStatement.executeQuery();
-                if (results.next()){
-                    Economy.getPlayerManager().setCorePlayer(uuid, new CorePlayer(results.getDouble("money")));
-                }else{
-                    Economy.getPlayerManager().setCorePlayer(uuid, new CorePlayer());
-                }
-                dataSource.close(connection, preparedStatement, results);
-            }catch (SQLException e){
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public void loadPlayerSync(UUID uuid){
+    public EconomyPlayer loadPlayer(UUID uuid){
+        EconomyPlayer economyPlayer = new EconomyPlayer(uuid);
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
@@ -48,46 +28,24 @@ public class QueryManager {
             preparedStatement.setString(1, uuid.toString());
             ResultSet results = preparedStatement.executeQuery();
             if (results.next()){
-                Economy.getPlayerManager().setCorePlayer(uuid, new CorePlayer(results.getDouble("money")));
-            }else{
-                Economy.getPlayerManager().setCorePlayer(uuid, new CorePlayer());
+                economyPlayer = new EconomyPlayer(uuid, results.getDouble("money"));
             }
             dataSource.close(connection, preparedStatement, results);
         }catch (SQLException e){
             e.printStackTrace();
         }
+        return economyPlayer;
     }
 
-    public void savePlayer(UUID uuid){
-        Bukkit.getScheduler().runTaskAsynchronously(Economy.getInstance(), ()->{
-           try {
-               CorePlayer corePlayer = Economy.getPlayerManager().getCorePlayer(uuid);
-               double money = corePlayer.getMoney();
-
-               Connection connection = dataSource.getConnection();
-               PreparedStatement preparedStatement = connection.prepareStatement(
-                       "REPLACE INTO economy_players VALUES (?,?)"
-               );
-               preparedStatement.setString(1, uuid.toString());
-               preparedStatement.setDouble(2, money);
-               preparedStatement.executeUpdate();
-               dataSource.close(connection, preparedStatement, null);
-           }catch (SQLException e){
-               e.printStackTrace();
-           }
-        });
-    }
-
-    public void savePlayerSync(UUID uuid){
+    public void savePlayer(EconomyPlayer economyPlayer){
         try {
-            CorePlayer corePlayer = Economy.getPlayerManager().getCorePlayer(uuid);
-            double money = corePlayer.getMoney();
+            double money = economyPlayer.getMoney();
 
             Connection connection = dataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "REPLACE INTO economy_players VALUES (?,?)"
             );
-            preparedStatement.setString(1, uuid.toString());
+            preparedStatement.setString(1, economyPlayer.getUniqueId().toString());
             preparedStatement.setDouble(2, money);
             preparedStatement.executeUpdate();
             dataSource.close(connection, preparedStatement, null);

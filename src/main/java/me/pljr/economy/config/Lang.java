@@ -1,6 +1,7 @@
 package me.pljr.economy.config;
 
 import me.pljr.pljrapispigot.managers.ConfigManager;
+import me.pljr.pljrapispigot.utils.FormatUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
@@ -53,18 +54,15 @@ public enum Lang {
         lang = new HashMap<>();
         for (Lang lang : values()){
             if (!fileConfig.isSet(lang.toString())){
-                fileConfig.set(lang.toString(), lang.getDefault());
+                fileConfig.set(lang.toString(), lang.defaultValue);
+            }else{
+                Lang.lang.put(lang, config.getString(lang.toString()));
             }
-            Lang.lang.put(lang, config.getString(lang.toString()));
         }
         config.save();
     }
 
     public String get(){
-        return lang.get(this);
-    }
-
-    public String getDefault(){
-        return this.defaultValue;
+        return lang.getOrDefault(this, FormatUtil.colorString(defaultValue));
     }
 }

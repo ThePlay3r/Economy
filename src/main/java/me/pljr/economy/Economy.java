@@ -18,41 +18,40 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Logger;
+
 public final class Economy extends JavaPlugin implements Listener {
-    private static Economy instance;
-    private static QueryManager queryManager;
-    private static PlayerManager playerManager;
+
+    public static Logger log;
+
+    private QueryManager queryManager;
+    private PlayerManager playerManager;
 
     // Files
-    private static ConfigManager configManager;
-    private static ConfigManager langManager;
+    private ConfigManager configManager;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        instance = this;
-        getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, new VaultHandler(), this, ServicePriority.Highest);
-        getServer().getPluginManager().registerEvents(this, this);
-    }
-
-    @EventHandler
-    private void onPLJRAPIStartup(PLJRApiStartupEvent event){
+        log = getLogger();
         setupConfig();
-        setupManagers();
         setupDatabase();
+        setupManagers();
         setupListeners();
         setupCommands();
+        getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class, new VaultHandler(playerManager), this, ServicePriority.Highest);
+        getServer().getPluginManager().registerEvents(this, this);
     }
 
     private void setupConfig(){
         saveDefaultConfig();
         configManager = new ConfigManager(this, "config.yml");
-        langManager = new ConfigManager(this, "lang.yml");
-        Lang.load(langManager);
+        Lang.load(new ConfigManager(this, "lang.yml"));
     }
 
     private void setupDatabase(){
-        DataSource dataSource = DataSource.getFromConfig(configManager);
+        DataSource dataSource = new DataSource(configManager);
+        dataSource.initPool("Economy-Pool");
         queryManager = new QueryManager(dataSource);
         queryManager.setupTables();
         for (Player player : Bukkit.getOnlinePlayers()){
@@ -61,7 +60,7 @@ public final class Economy extends JavaPlugin implements Listener {
     }
 
     private void setupManagers(){
-        playerManager = new PlayerManager();
+        playerManager = new PlayerManager(this, queryManager, true);
     }
 
     private void setupCommands(){
@@ -70,27 +69,15 @@ public final class Economy extends JavaPlugin implements Listener {
     }
 
     private void setupListeners(){
-        getServer().getPluginManager().registerEvents(new AsyncPlayerPreLoginListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
-    }
-
-    public static QueryManager getQueryManager() {
-        return queryManager;
-    }
-
-    public static PlayerManager getPlayerManager() {
-        return playerManager;
-    }
-
-    public static Economy getInstance() {
-        return instance;
+        getServer().getPluginManager().registerEvents(new AsyncPlayerPreLoginListener(playerManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(playerManager), this);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
         for (Player player : Bukkit.getOnlinePlayers()){
-            queryManager.savePlayerSync(player.getUniqueId());
+            playerManager.getPlayer(player.getUniqueId(), queryManager::savePlayer);
         }
     }
 }

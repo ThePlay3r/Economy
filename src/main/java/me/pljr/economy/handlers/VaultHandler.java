@@ -1,7 +1,9 @@
 package me.pljr.economy.handlers;
 
+import lombok.AllArgsConstructor;
 import me.pljr.economy.config.Lang;
-import me.pljr.economy.objects.CorePlayer;
+import me.pljr.economy.managers.PlayerManager;
+import me.pljr.economy.objects.EconomyPlayer;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
@@ -10,7 +12,11 @@ import org.bukkit.OfflinePlayer;
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 public class VaultHandler implements Economy {
+
+    private final PlayerManager playerManager;
+
     /**
      * Checks if economy method is enabled.
      *
@@ -95,7 +101,7 @@ public class VaultHandler implements Economy {
     public boolean hasAccount(String playerName) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
         if (!player.isOnline()){
-            me.pljr.economy.Economy.getPlayerManager().getCorePlayer(player.getUniqueId());
+            playerManager.getPlayer(player.getUniqueId());
         }
         return true;
     }
@@ -111,7 +117,7 @@ public class VaultHandler implements Economy {
     @Override
     public boolean hasAccount(OfflinePlayer player) {
         if (!player.isOnline()){
-            me.pljr.economy.Economy.getPlayerManager().getCorePlayer(player.getUniqueId());
+            playerManager.getPlayer(player.getUniqueId());
         }
         return true;
     }
@@ -147,7 +153,7 @@ public class VaultHandler implements Economy {
     @Override
     public double getBalance(String playerName) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
-        return me.pljr.economy.Economy.getPlayerManager().getCorePlayer(player.getUniqueId()).getMoney();
+        return playerManager.getPlayer(player.getUniqueId()).getMoney();
     }
 
     /**
@@ -158,7 +164,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public double getBalance(OfflinePlayer player) {
-        return me.pljr.economy.Economy.getPlayerManager().getCorePlayer(player.getUniqueId()).getMoney();
+        return playerManager.getPlayer(player.getUniqueId()).getMoney();
     }
 
     /**
@@ -242,11 +248,11 @@ public class VaultHandler implements Economy {
         if (!has(playerName, amount)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_WITHDRAW_PLAYER_FAILURE_TOO_MUCH.get().replace("{player}", playerName));
 
         UUID uuid = Bukkit.getOfflinePlayer(playerName).getUniqueId();
-        CorePlayer corePlayer = me.pljr.economy.Economy.getPlayerManager().getCorePlayer(uuid);
-        double currentAmount = corePlayer.getMoney();
-        corePlayer.setMoney(currentAmount-amount);
-        me.pljr.economy.Economy.getPlayerManager().setCorePlayer(uuid, corePlayer);
-        return new EconomyResponse(amount, corePlayer.getMoney(), EconomyResponse.ResponseType.SUCCESS, "");
+        EconomyPlayer economyPlayer = playerManager.getPlayer(uuid);
+        double currentAmount = economyPlayer.getMoney();
+        economyPlayer.setMoney(currentAmount-amount);
+        playerManager.setPlayer(uuid, economyPlayer);
+        return new EconomyResponse(amount, economyPlayer.getMoney(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     /**
@@ -263,11 +269,11 @@ public class VaultHandler implements Economy {
         if (!has(player, amount)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_WITHDRAW_PLAYER_FAILURE_TOO_MUCH.get().replace("{player}", playerName));
 
         UUID uuid = player.getUniqueId();
-        CorePlayer corePlayer = me.pljr.economy.Economy.getPlayerManager().getCorePlayer(uuid);
-        double currentAmount = corePlayer.getMoney();
-        corePlayer.setMoney(currentAmount-amount);
-        me.pljr.economy.Economy.getPlayerManager().setCorePlayer(uuid, corePlayer);
-        return new EconomyResponse(amount, corePlayer.getMoney(), EconomyResponse.ResponseType.SUCCESS, "");
+        EconomyPlayer economyPlayer = playerManager.getPlayer(uuid);
+        double currentAmount = economyPlayer.getMoney();
+        economyPlayer.setMoney(currentAmount-amount);
+        playerManager.setPlayer(uuid, economyPlayer);
+        return new EconomyResponse(amount, economyPlayer.getMoney(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     /**
@@ -305,11 +311,11 @@ public class VaultHandler implements Economy {
         if (!hasAccount(playerName)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_DEPOSIT_PLAYER_FAILURE_NO_ACCOUNT.get().replace("{player}", playerName));
 
         UUID uuid = Bukkit.getOfflinePlayer(playerName).getUniqueId();
-        CorePlayer corePlayer = me.pljr.economy.Economy.getPlayerManager().getCorePlayer(uuid);
-        double currentAmount = corePlayer.getMoney();
-        corePlayer.setMoney(currentAmount+amount);
-        me.pljr.economy.Economy.getPlayerManager().setCorePlayer(uuid, corePlayer);
-        return new EconomyResponse(amount, corePlayer.getMoney(), EconomyResponse.ResponseType.SUCCESS, "");
+        EconomyPlayer economyPlayer = playerManager.getPlayer(uuid);
+        double currentAmount = economyPlayer.getMoney();
+        economyPlayer.setMoney(currentAmount+amount);
+        playerManager.setPlayer(uuid, economyPlayer);
+        return new EconomyResponse(amount, economyPlayer.getMoney(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     /**
@@ -325,11 +331,11 @@ public class VaultHandler implements Economy {
         if (!hasAccount(player)) return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, Lang.VAULT_DEPOSIT_PLAYER_FAILURE_NO_ACCOUNT.get().replace("{player}", playerName));
 
         UUID uuid = player.getUniqueId();
-        CorePlayer corePlayer = me.pljr.economy.Economy.getPlayerManager().getCorePlayer(uuid);
-        double currentAmount = corePlayer.getMoney();
-        corePlayer.setMoney(currentAmount+amount);
-        me.pljr.economy.Economy.getPlayerManager().setCorePlayer(uuid, corePlayer);
-        return new EconomyResponse(amount, corePlayer.getMoney(), EconomyResponse.ResponseType.SUCCESS, "");
+        EconomyPlayer economyPlayer = playerManager.getPlayer(uuid);
+        double currentAmount = economyPlayer.getMoney();
+        economyPlayer.setMoney(currentAmount+amount);
+        playerManager.setPlayer(uuid, economyPlayer);
+        return new EconomyResponse(amount, economyPlayer.getMoney(), EconomyResponse.ResponseType.SUCCESS, "");
     }
 
     /**
@@ -498,7 +504,7 @@ public class VaultHandler implements Economy {
     @Override
     public boolean createPlayerAccount(String playerName) {
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
-        me.pljr.economy.Economy.getPlayerManager().getCorePlayer(player.getUniqueId());
+        playerManager.getPlayer(player.getUniqueId());
         return true;
     }
 
@@ -510,7 +516,7 @@ public class VaultHandler implements Economy {
      */
     @Override
     public boolean createPlayerAccount(OfflinePlayer player) {
-        me.pljr.economy.Economy.getPlayerManager().getCorePlayer(player.getUniqueId());
+        playerManager.getPlayer(player.getUniqueId());
         return true;
     }
 
