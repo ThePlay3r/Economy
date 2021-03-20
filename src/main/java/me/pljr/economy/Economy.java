@@ -3,6 +3,7 @@ package me.pljr.economy;
 import me.pljr.economy.commands.AEconomyCommand;
 import me.pljr.economy.commands.EconomyCommand;
 import me.pljr.economy.config.Lang;
+import me.pljr.economy.config.Settings;
 import me.pljr.economy.handlers.VaultHandler;
 import me.pljr.economy.listeners.AsyncPlayerPreLoginListener;
 import me.pljr.economy.listeners.PlayerQuitListener;
@@ -46,6 +47,7 @@ public final class Economy extends JavaPlugin implements Listener {
     private void setupConfig(){
         saveDefaultConfig();
         configManager = new ConfigManager(this, "config.yml");
+        new Settings(configManager);
         Lang.load(new ConfigManager(this, "lang.yml"));
     }
 
