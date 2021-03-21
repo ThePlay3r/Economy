@@ -13,10 +13,14 @@ public class Settings {
     }
 
     private final double defaultBalance;
+    private final double deathLose;
+    private final double deathLosePlayer;
 
     public Settings(ConfigManager config){
         instance = this;
 
         defaultBalance = config.getDouble(PATH+".default-balance");
+        deathLose = config.getDouble(PATH+".death-lose");
+        deathLosePlayer = config.getDouble(PATH+".death-lose-player");
     }
 }

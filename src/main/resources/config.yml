@@ -38,4 +38,6 @@ mysql-settings:
                  #############################################################  \
 settings:
   default-balance: 10 #-> What should be the initial amount of currency for new players?
+  death-lose: 2 #-> How many percent of player's current balance should he lose per death?
+  death-lose-player: 10 #-> How many percent of player's current balance should he lose per death by player?
 #|--------------------------------------------------------------------------------------------------------------------|#

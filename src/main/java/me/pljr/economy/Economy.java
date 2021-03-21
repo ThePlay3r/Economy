@@ -6,6 +6,7 @@ import me.pljr.economy.config.Lang;
 import me.pljr.economy.config.Settings;
 import me.pljr.economy.handlers.VaultHandler;
 import me.pljr.economy.listeners.AsyncPlayerPreLoginListener;
+import me.pljr.economy.listeners.PlayerDeathListener;
 import me.pljr.economy.listeners.PlayerQuitListener;
 import me.pljr.economy.managers.PlayerManager;
 import me.pljr.economy.managers.QueryManager;
@@ -73,6 +74,7 @@ public final class Economy extends JavaPlugin implements Listener {
     private void setupListeners(){
         getServer().getPluginManager().registerEvents(new AsyncPlayerPreLoginListener(playerManager), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(playerManager), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(playerManager), this);
     }
 
     @Override
