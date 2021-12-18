@@ -4,7 +4,7 @@ Spigot plugin for handling in-game Vault Economy.
 ----
 
 ## 🔧 Dependencies
-- PLJRApi: https://www.github.com/ThePlay3r/ServerCore
+- PLJRApi: https://www.github.com/ThePlay3r/PLJRApi-Spigot
 - Vault: https://www.spigotmc.org/resources/vault.34315/
 
 ## 📋 Features
